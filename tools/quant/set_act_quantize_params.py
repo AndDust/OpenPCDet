@@ -46,7 +46,7 @@ def set_act_quantize_params(module: Union[QuantModel, QuantModule, BaseQuantBloc
         # print("设置后delta:{}".format(module.act_quantizer.delta))
 
         """使用绝对值"""
-        module.act_quantizer.bn_estimate_abs_max = torch.max(torch.abs(beta_mean + 3 * torch.abs(gamma_std)))
+        module.act_quantizer.bn_estimate_abs_max = torch.max(torch.abs(beta_mean + 4 * torch.abs(gamma_std)))
         print("bn_estimate_abs_max:{}".format(module.act_quantizer.bn_estimate_abs_max))
 
         module.act_quantizer.delta = 2 * module.act_quantizer.bn_estimate_abs_max / (module.act_quantizer.n_levels - 1)
