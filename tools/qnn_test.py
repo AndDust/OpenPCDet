@@ -6,6 +6,7 @@ import os
 import re
 import time
 from pathlib import Path
+import random
 
 import numpy as np
 import torch
@@ -65,16 +66,20 @@ def parse_config():
                         help='init opt mode for activation')
     parser.add_argument('--prob', default=0.5, type=float)
 
+    parser.add_argument('--rand_seed', type=int, default=1024, help='random seed')
+
     args = parser.parse_args()
 
     cfg_from_yaml_file(args.cfg_file, cfg)
     cfg.TAG = Path(args.cfg_file).stem
     cfg.EXP_GROUP_PATH = '/'.join(args.cfg_file.split('/')[1:-1])  # remove 'cfgs' and 'xxxx.yaml'
 
-    np.random.seed(1024)
-
-    # torch.manual_seed(1024)
-    # torch.cuda.manual_seed(1024)
+    """ 固定随机种子 """
+    random.seed(args.rand_seed)
+    np.random.seed(args.rand_seed)
+    torch.manual_seed(args.rand_seed)
+    torch.cuda.manual_seed(args.rand_seed)
+    torch.backends.cudnn.deterministic = True
 
     if args.set_cfgs is not None:
         cfg_from_list(args.set_cfgs, cfg)
