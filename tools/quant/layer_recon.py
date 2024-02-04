@@ -66,7 +66,7 @@ num = 0
 #                         warmup: float = 0.0, p: float = 2.0, lr: float = 4e-5, input_prob: float = 1.0,
 #                         keep_gpu: bool = True, lamb_r: float = 0.2, T: float = 7.0, bn_lr: float = 1e-3, lamb_c=0.02, a_count=0):
 
-def layer_reconstruction(layer: QuantModule):
+def layer_reconstruction(layer: QuantModule, num_std):
     """
     Reconstruction to optimize the output from each layer.
 
@@ -123,7 +123,7 @@ def layer_reconstruction(layer: QuantModule):
         
         把这个输入送入这个layer，利用校准数据集，对于激活去初始化得到一个scale
     """
-    set_act_quantize_params(layer, None, 100)
+    set_act_quantize_params(layer, num_std, None, 100)
     # if num != a_count:sk
     #     print(f"第{num}个算子，完成了激活初始化，该层不执行重构")
     #     return

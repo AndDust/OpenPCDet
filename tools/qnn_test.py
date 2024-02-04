@@ -67,6 +67,7 @@ def parse_config():
     parser.add_argument('--prob', default=0.5, type=float)
 
     parser.add_argument('--rand_seed', type=int, default=1024, help='random seed')
+    parser.add_argument('--num_std', type=int, default=4, help='the number of standard deviation for estimating range')
 
     args = parser.parse_args()
 
@@ -150,7 +151,7 @@ def get_qnn_model(args, PointRCNN_model):
                 传入完整的qnn、fp_model和当前的module、fp_module
             """
             # layer_reconstruction(qnn, fp_model, module, fp_module, **kwargs)
-            layer_reconstruction(module)
+            layer_reconstruction(module, args.num_std)
         elif isinstance(module, BaseQuantBlock):
             # block_reconstruction(qnn, fp_model, module, fp_module, **kwargs)
             block_reconstruction(module)
